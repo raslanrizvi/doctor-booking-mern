@@ -4,7 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#5f6FFF",
+        primary: "#003e29",
+        secondary: "#6BBF8A",
+        cardbg: "#A8D5BA",
       },
       gridTemplateColumns: {
         auto: "repeat(auto-fill, minmax(200px, 1fr))",
