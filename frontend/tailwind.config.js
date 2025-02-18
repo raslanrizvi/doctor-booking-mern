@@ -6,7 +6,13 @@ export default {
       colors: {
         primary: "#003e29",
         secondary: "#6BBF8A",
-        cardbg: "#A8D5BA",
+        cardBg: "#A8D5BA",
+      },
+      fontFamily: {
+        heading: ["Rubik", "sans-serif"],
+        headingTwo: ["Ultra", "sans-serif"],
+        subHeading: ["Roboto-Condensed", "sans-serif"],
+        text: ["Nunito", "sans-serif"],
       },
       gridTemplateColumns: {
         auto: "repeat(auto-fill, minmax(200px, 1fr))",

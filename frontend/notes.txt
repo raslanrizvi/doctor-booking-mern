@@ -1,6 +1,12 @@
 
-10/02/25 END 01:23:00
 
-10/02/25 END 01:36:00
+#Font
+Heading - Rubik-Bold, sans-serif
+Heading2 - Ultra-Regular, sans-serif
+Sub Headings - Roboto Condensed-Medium,sans-serif
+text - Nunito-Light, sans-serif
 
-10/02/25 END 01::00
+
+
+#Time Stamps
+Last Stop 01:48:00
