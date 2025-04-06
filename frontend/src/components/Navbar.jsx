@@ -9,7 +9,7 @@ const Navbar = () => {
   const [token, setToken] = useState(true)
 
   return (
-    <div className='flex bg-primary items-center justify-between text-sm px-14 py-4 mb-5 border-b border-b-gray-400 rounded-b-[16px]'>
+    <div className='flex bg-navFot items-center justify-between text-sm px-14 py-4 mb-5 border-b border-b-gray-400 rounded-b-[16px]'>
       <img
         onClick={() => navigate("/")}
         className='w-44 cursor-pointer'

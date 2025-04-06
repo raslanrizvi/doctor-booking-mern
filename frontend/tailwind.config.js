@@ -4,9 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#003e29",
+        primary: "#3D9E4F",
+        navFot: "#047E3B",
         secondary: "#6BBF8A",
-        cardBg: "#A8D5BA",
+        cardBg: "#E0F1E7",
       },
       fontFamily: {
         heading: ["Rubik", "sans-serif"],

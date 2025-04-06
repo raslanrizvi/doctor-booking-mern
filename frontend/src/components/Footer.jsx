@@ -3,7 +3,7 @@ import { assets } from "../assets/assets"
 
 const Footer = () => {
   return (
-    <div className='bg-primary rounded-t-[16px] text-white font-text select-none'>
+    <div className='bg-navFot rounded-t-[16px] text-white font-text select-none'>
       <div className='flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 px-20 py-20 mt-48 text-sm'>
         {/* ---- Left Section ---- */}
         <div>
