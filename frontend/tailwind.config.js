@@ -6,7 +6,7 @@ export default {
       colors: {
         primary: "#3D9E4F",
         navFot: "#047E3B",
-        secondary: "#6BBF8A",
+        secondary: "#4a9e5a",
         cardBg: "#E0F1E7",
       },
       fontFamily: {
