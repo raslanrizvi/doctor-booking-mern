@@ -49,7 +49,7 @@ const About = () => {
         </p>
       </div>
       <div className='flex flex-col md:flex-row mb-20'>
-        <div className='text-[#047e3b] border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] rounded-l-xl group hover:bg-primary transition-all duration-300 hover:text-white'>
+        <div className='text-[#047e3b] border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] rounded-t-xl md:rounded-tr-none md:rounded-l-xl group hover:bg-primary transition-all duration-300 hover:text-white'>
           <b>Efficiency:</b>
           <p className='text-gray-600 group-hover:text-white'>
             Streamlined appointment scheduling that fits into your busy
@@ -63,7 +63,7 @@ const About = () => {
             area.
           </p>
         </div>
-        <div className='text-[#047e3b] border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] rounded-r-xl group hover:bg-primary transition-all duration-300 hover:text-white'>
+        <div className='text-[#047e3b] border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] rounded-b-xl md:rounded-bl-none md:rounded-r-xl group hover:bg-primary transition-all duration-300 hover:text-white'>
           <b>Personalization:</b>
           <p className='text-gray-600 group-hover:text-white'>
             Tailored recommendations and reminders to help you stay on top of

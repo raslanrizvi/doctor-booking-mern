@@ -153,7 +153,7 @@ const appointment = () => {
               ))}
           </div>
 
-          <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4 p-2'>
+          <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
             {docSlots.length &&
               docSlots[slotIndex].map((item, index) => (
                 <p

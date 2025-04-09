@@ -1,5 +1,6 @@
 import React from "react"
 import { assets } from "../assets/assets"
+import { NavLink } from "react-router-dom"
 
 const Footer = () => {
   return (
@@ -25,10 +26,32 @@ const Footer = () => {
         <div>
           <p className='text-lg font-heading font-medium mb-5'>COMPANY</p>
           <ul className='flex flex-col gap-2'>
-            <li>Home</li>
-            <li>About US</li>
-            <li>Contact Us</li>
-            <li>Privacy Policy</li>
+            <li>
+              <NavLink to={"/"} onClick={() => scrollTo(0, 0)}>
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={"/doctors"} onClick={() => scrollTo(0, 0)}>
+                Doctors
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={"/about"} onClick={() => scrollTo(0, 0)}>
+                About US
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={"/contact"} onClick={() => scrollTo(0, 0)}>
+                Contact
+              </NavLink>{" "}
+              Us
+            </li>
+            <li>
+              <NavLink to={"/"} onClick={() => scrollTo(0, 0)}>
+                Privacy Policy
+              </NavLink>
+            </li>
           </ul>
         </div>
 
@@ -36,8 +59,12 @@ const Footer = () => {
         <div className='text-wrap'>
           <p className='text-lg font-heading font-medium mb-5'>GET IN TOUCH</p>
           <ul className='flex flex-col gap-2'>
-            <li>+94-11-576-6942</li>
-            <li>contact@medicey.lk</li>
+            <li>
+              <a href='tel:+94115766942'>+94-11-576-6942</a>
+            </li>
+            <li>
+              <a href='mailto:contact@medicey.lk'>contact@medicey.lk</a>
+            </li>
           </ul>
         </div>
       </div>
