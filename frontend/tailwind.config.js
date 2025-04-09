@@ -4,7 +4,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#5f6FFF",
+        primary: "#3D9E4F",
+        navFot: "#047E3B",
+        secondary: "#4a9e5a",
+        cardBg: "#E0F1E7",
+      },
+      fontFamily: {
+        heading: ["Rubik", "sans-serif"],
+        headingTwo: ["Ultra", "sans-serif"],
+        subHeading: ["Roboto-Condensed", "sans-serif"],
+        text: ["Nunito", "sans-serif"],
+      },
+      gridTemplateColumns: {
+        auto: "repeat(auto-fill, minmax(200px, 1fr))",
       },
     },
   },
