@@ -104,4 +104,6 @@ const loginAdmin = async (req, res) => {
   }
 }
 
+//API To Get All Doctors List For Admin Panel
+
 export { addDoctor, loginAdmin }
