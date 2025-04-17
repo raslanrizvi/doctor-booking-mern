@@ -1,14 +1,19 @@
 import React, { useContext, useEffect, useState } from "react"
 import { AppContext } from "../context/AppContext"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { assets } from "../assets/assets"
 import RelatedDoctors from "../components/RelatedDoctors"
+import { toast } from "react-toastify"
+import axios from "axios"
 
 const appointment = () => {
   // assigning the parameters
   const { docId } = useParams()
-  const { doctors, currencySymbol } = useContext(AppContext)
+  const { doctors, currencySymbol, backendUrl, token, getDoctorsData } =
+    useContext(AppContext)
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
+
+  const navigate = useNavigate()
 
   //useState to set docInfo
   const [docInfo, setDocInfo] = useState(null)
@@ -66,6 +71,43 @@ const appointment = () => {
         currentDate.setMinutes(currentDate.getMinutes() + 30)
       }
       setDocSlots((prev) => [...prev, timeSlots])
+    }
+  }
+
+  //Calling api to book appointment
+  const bookAppointment = async () => {
+    if (!token) {
+      toast.warning("Login To Book Appointment")
+      return navigate("/login")
+    }
+
+    try {
+      //storing date selected by patient
+      const date = docSlots[slotIndex][0].datetime
+
+      //destructuring date
+      let day = date.getDate()
+      let month = date.getMonth() + 1
+      let year = date.getFullYear()
+
+      const slotDate = day + "_" + month + "_" + year
+
+      //calling api to book appointment
+      const { data } = await axios.post(
+        backendUrl + "/api/user/book-appointment",
+        { docId, slotDate, slotTime },
+        { headers: { token } }
+      )
+      if (data.success) {
+        toast.success(data.message)
+        getDoctorsData()
+        navigate("/my-Appointments")
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+      console.log(error)
     }
   }
 
@@ -169,7 +211,10 @@ const appointment = () => {
                 </p>
               ))}
           </div>
-          <button className='bg-[#047e3b] text-white text-xl font-medium px-24 py-6 rounded-full my-6 drop-shadow-[0_5px_4px_rgba(4,126,59,0.40)]'>
+          <button
+            onClick={bookAppointment}
+            className='bg-[#047e3b] text-white text-xl font-medium px-24 py-6 rounded-full my-6 drop-shadow-[0_5px_4px_rgba(4,126,59,0.40)]'
+          >
             Book an Appointment
           </button>
         </div>
