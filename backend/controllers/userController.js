@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 import { v2 as cloudinary } from "cloudinary"
 import doctorModel from "../models/doctorModel.js"
 import appointmentModel from "../models/appoitmentModel.js"
+import Stripe from "stripe"
 
 //
 //
@@ -246,6 +247,66 @@ const cancelAppointment = async (req, res) => {
   }
 }
 
+//API to make payment for appointment via stripe
+
+const paymentStripe = async (req, res) => {
+  try {
+    const userId = req.userId
+    const { appointmentId } = req.body
+
+    const userData = await userModel.findById(userId)
+    const appointmentData = await appointmentModel.findById(appointmentId)
+    const doctorData = await doctorModel.findById(appointmentData.docId)
+
+    if (!appointmentData || appointmentData.cancelled) {
+      return res.json({
+        success: false,
+        message: "Appointment Cancelled or Not Found",
+      })
+    }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET)
+
+    //Create Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      success_url: `${process.env.CLIENT_SITE_URL}/my-appointments`,
+      //cancel_url:`${process.env.CLIENT_SITE_URL}/checkout-success`,
+      customer_email: userData.email,
+      client_reference_id: appointmentId,
+      line_items: [
+        {
+          price_data: {
+            currency: "lkr",
+            unit_amount: appointmentData.amount * 100,
+            product_data: {
+              name: doctorData.name,
+              description: doctorData.speciality,
+              images: [doctorData.image],
+            },
+          },
+          quantity: 1,
+        },
+      ],
+    })
+
+    await appointmentModel.findByIdAndUpdate(appointmentId, { payment: true })
+
+    res.status(200).json({
+      success: true,
+      message: "Paid Successfully",
+      session,
+    })
+  } catch (error) {
+    console.log("Appointment Payment Failed: " + error)
+    res.status(500).json({
+      success: false,
+      message: "Appointment Payment Failed: " + error,
+    })
+  }
+}
+
 export {
   registerUser,
   loginUser,
@@ -254,4 +315,5 @@ export {
   bookAppointment,
   listAppointment,
   cancelAppointment,
+  paymentStripe,
 }
