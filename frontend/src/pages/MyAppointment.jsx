@@ -62,6 +62,27 @@ const MyAppointment = () => {
     } catch (error) {}
   }
 
+  const appointmentStripe = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/user/payment-stripe",
+        { appointmentId },
+        { headers: { token } }
+      )
+      if (data.session.url) {
+        window.location.href = data.session.url
+        //console.log(data.session)
+      }
+
+      if (!data.success) {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error)
+    }
+  }
+
   useEffect(() => {
     if (token) {
       getUserAppointment()
@@ -103,25 +124,35 @@ const MyAppointment = () => {
             </div>
             <div></div>
             <div className='flex flex-col gap-2 justify-end font-medium'>
-              {!item.cancelled && (
-                <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border-2 border-navFot rounded-lg hover:bg-navFot hover:text-white hover:shadow-md transition-all duration-300'>
+              {!item.cancelled && !item.payment && (
+                <button
+                  onClick={() => appointmentStripe(item._id)}
+                  className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border-2 border-navFot rounded-lg hover:bg-navFot hover:text-white hover:shadow-md transition-all duration-300'
+                >
                   Pay Now
                 </button>
               )}
-              <button
-                onClick={() => cancelAppointment(item._id)}
-                disabled={item.cancelled}
-                className={`text-sm text-center sm:min-w-48 py-2 border-2 rounded-lg
+              {item.payment && (
+                <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border-2 border-cardBg bg-cardBg rounded-lg'>
+                  Paid
+                </button>
+              )}
+              {!item.payment && (
+                <button
+                  onClick={() => cancelAppointment(item._id)}
+                  disabled={item.cancelled}
+                  className={`text-sm text-center sm:min-w-48 py-2 border-2 rounded-lg
                   ${
                     item.cancelled
                       ? `bg-red-300 border-red-300 text-gray-600`
                       : `text-stone-500 border-navFot hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-md transition-all duration-300`
                   }`}
-              >
-                {item.cancelled
-                  ? "Appointment Cancelled"
-                  : "Cancel Appointment"}
-              </button>
+                >
+                  {item.cancelled
+                    ? "Appointment Cancelled"
+                    : "Cancel Appointment"}
+                </button>
+              )}
             </div>
           </div>
         ))}
