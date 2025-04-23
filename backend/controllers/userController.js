@@ -248,7 +248,7 @@ const cancelAppointment = async (req, res) => {
 }
 
 //API to make payment for appointment via stripe
-
+const stripe = new Stripe(process.env.STRIPE_SECRET)
 const paymentStripe = async (req, res) => {
   try {
     const userId = req.userId
@@ -265,14 +265,12 @@ const paymentStripe = async (req, res) => {
       })
     }
 
-    const stripe = new Stripe(process.env.STRIPE_SECRET)
-
     //Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      success_url: `${process.env.CLIENT_SITE_URL}/my-appointments`,
-      //cancel_url:`${process.env.CLIENT_SITE_URL}/checkout-success`,
+      success_url: `${process.env.CLIENT_SITE_URL}/my-appointments?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CLIENT_SITE_URL}/my-appointments/`,
       customer_email: userData.email,
       client_reference_id: appointmentId,
       line_items: [
@@ -291,8 +289,6 @@ const paymentStripe = async (req, res) => {
       ],
     })
 
-    await appointmentModel.findByIdAndUpdate(appointmentId, { payment: true })
-
     res.status(200).json({
       success: true,
       message: "Paid Successfully",
@@ -307,6 +303,40 @@ const paymentStripe = async (req, res) => {
   }
 }
 
+//verifying stripe payment
+const verifyStripe = async (req, res) => {
+  try {
+    const { sessionId } = req.body
+
+    if (!sessionId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Session ID is required" })
+    }
+
+    const session = await stripe.checkout.sessions.retrieve(sessionId)
+
+    if (session.payment_status === "paid") {
+      // Payment is confirmed
+      const appointmentId = session.client_reference_id
+      await appointmentModel.findByIdAndUpdate(appointmentId, {
+        payment: true,
+      })
+      res.json({
+        success: true,
+        message: "Appointment Paid Successfully",
+      })
+    } else {
+      res.json({ success: false, message: "Payment Failed" })
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error verifying payment: " + error.message,
+    })
+  }
+}
+
 export {
   registerUser,
   loginUser,
@@ -316,4 +346,5 @@ export {
   listAppointment,
   cancelAppointment,
   paymentStripe,
+  verifyStripe,
 }
