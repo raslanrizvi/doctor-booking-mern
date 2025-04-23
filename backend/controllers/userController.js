@@ -327,7 +327,7 @@ const verifyStripe = async (req, res) => {
         message: "Appointment Paid Successfully",
       })
     } else {
-      res.json({ success: false, message: "Payment Failed" })
+      res.json({ success: false, message: "Payment for Appointment Failed" })
     }
   } catch (error) {
     res.status(500).json({
