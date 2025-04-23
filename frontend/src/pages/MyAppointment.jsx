@@ -2,9 +2,11 @@ import React, { act, useContext, useEffect, useState } from "react"
 import { AppContext } from "../context/AppContext"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { useSearchParams } from "react-router-dom"
 
 const MyAppointment = () => {
   const { backendUrl, token, getDoctorsData } = useContext(AppContext)
+  const [searchParams] = useSearchParams()
 
   const [appointments, setAppointments] = useState([])
   const months = [
@@ -71,7 +73,7 @@ const MyAppointment = () => {
       )
       if (data.session.url) {
         window.location.href = data.session.url
-        //console.log(data.session)
+        console.log(data.session)
       }
 
       if (!data.success) {
@@ -82,6 +84,37 @@ const MyAppointment = () => {
       toast.error(error)
     }
   }
+
+  //verifying Stripe Payment
+  const verifyStripePayment = async (sessionId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/user/verify-stripe",
+        { sessionId },
+        { headers: { token } }
+      )
+
+      if (data.success) {
+        toast.success(data.message)
+        getUserAppointment()
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.error("Error verifying payment:", error)
+    }
+  }
+
+  useEffect(() => {
+    const sessionId = searchParams.get("session_id")
+
+    if (sessionId) {
+      verifyStripePayment(sessionId)
+      console.log(sessionId)
+    } else {
+      console.log("no session ID")
+    }
+  }, [])
 
   useEffect(() => {
     if (token) {
@@ -95,7 +128,7 @@ const MyAppointment = () => {
         My Appointments
       </p>
       <div>
-        {appointments.slice(0, 4).map((item, index) => (
+        {appointments.map((item, index) => (
           <div
             className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b'
             key={index}
