@@ -3,6 +3,7 @@ import { assets } from "../assets/assets.js"
 import { AdminContext } from "../context/AdminContext.jsx"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { DoctorContext } from "../context/DoctorContext.jsx"
 
 const login = () => {
   const [state, setState] = useState("Admin")
@@ -10,6 +11,8 @@ const login = () => {
   const [password, setPassword] = useState("")
 
   const { setAToken, backendUrl } = useContext(AdminContext)
+  const { setDToken } = useContext(DoctorContext)
+
   const onSubmitHandler = async (event) => {
     //preventing the form from Refreshing
     event.preventDefault()
@@ -37,6 +40,21 @@ const login = () => {
 
         //If State is !== Admin then
       } else {
+        const { data } = await axios.post(backendUrl + "/api/doctor/login", {
+          email,
+          password,
+        })
+
+        //Checking for Doctor Credentials
+        if (data.success) {
+          //store token on local storage
+          localStorage.setItem("dToken", data.token)
+          //set dToken state
+          setDToken(data.token)
+        } else {
+          //Displaying Invalid Credentials message via Toast
+          toast.error(data.message)
+        }
       }
     } catch (error) {
       console.log(error)
