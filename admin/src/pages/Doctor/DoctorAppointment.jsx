@@ -4,7 +4,13 @@ import { AppContext } from "../../context/AppContext"
 import { assets } from "../../assets/assets"
 
 const DoctorAppointment = () => {
-  const { dToken, appointments, getAppointments } = useContext(DoctorContext)
+  const {
+    dToken,
+    appointments,
+    getAppointments,
+    completeAppointment,
+    cancelAppointment,
+  } = useContext(DoctorContext)
   const { calculateAge, slotDateFormat, currencySymbol } =
     useContext(AppContext)
 
@@ -29,7 +35,7 @@ const DoctorAppointment = () => {
           <p>Action</p>
         </div>
 
-        {appointments.map((item, index) => (
+        {appointments.reverse().map((item, index) => (
           <div
             className='flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50'
             key={index}
@@ -61,17 +67,31 @@ const DoctorAppointment = () => {
             <p>
               {item.amount} {currencySymbol}
             </p>
-            <div className='flex'>
-              <img
-                className='w-10 cursor-pointer'
-                src={assets.cancel_icon}
-                alt='cancel icon'
-              />
-              <img
-                className='w-10 cursor-pointer'
-                src={assets.tick_icon}
-                alt='Complete icon'
-              />
+            <div className='mx-auto'>
+              {item.isCompleted ? (
+                <p className='border-2 border-secondary bg-green-100 px-2.5 mx-auto rounded-full text-sm ml-2'>
+                  Completed
+                </p>
+              ) : item.cancelled ? (
+                <p className='border-2 border-red-500 bg-red-100 px-2.5 mx-auto rounded-full text-sm ml-2'>
+                  Cancelled
+                </p>
+              ) : (
+                <div className='flex'>
+                  <img
+                    onClick={() => cancelAppointment(item._id)}
+                    className='w-10 cursor-pointer'
+                    src={assets.cancel_icon}
+                    alt='cancel icon'
+                  />
+                  <img
+                    onClick={() => completeAppointment(item._id)}
+                    className='w-10 cursor-pointer'
+                    src={assets.tick_icon}
+                    alt='Complete icon'
+                  />
+                </div>
+              )}
             </div>
           </div>
         ))}
