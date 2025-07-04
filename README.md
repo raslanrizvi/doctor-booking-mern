@@ -116,8 +116,32 @@
 ---
 
 ## **Application Screenshots**
+### **Login**
+<img src="User Interface Images/login.png" width="500" />
 
+### **Home Banner**
+<img src="User Interface Images/home-banner.png" width="500" />
 
+### **All Doctors (Patinet View)**
+<img src="User Interface Images/all-doctors.png" width="500" />
+
+### **Doctors By Category (Patinet View)**
+<img src="User Interface Images/doctors-by-category.png" width="500" />
+
+### **Book Appointment (Patient View)**
+<img src="User Interface Images/book-appointment-page.png" width="500" />
+
+### **My Appointments (Patient View)**
+<img src="User Interface Images/my-appointments--patient.png" width="500" />
+
+### **Patient Profile (Patient View)**
+<img src="User Interface Images/patient-profile.png" width="500" />
+
+### **Add Doctord (Admin View)**
+<img src="User Interface Images/add-doctor.png" width="500" />
+
+### **All Doctors (Admin View)**
+<img src="User Interface Images/doctors-list--admin.png" width="500" />
 
 ---
 
