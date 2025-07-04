@@ -1,4 +1,3 @@
----
 
 # **Doctor Booking MERN (MediCey) – Paper-Less Channeling Web Application**
 
